@@ -12,15 +12,15 @@ import (
 
 // Repo is git repository manager.
 type Repo struct {
-	url  string
-	home string
+	url      string
+	cacheDir string
 }
 
 // NewRepo new a repository manager.
 func NewRepo(url string) *Repo {
 	return &Repo{
-		url:  url,
-		home: kratosHomeWithDir("repo"),
+		url:      url,
+		cacheDir: getCacheDir("repos"),
 	}
 }
 
@@ -28,11 +28,11 @@ func NewRepo(url string) *Repo {
 func (r *Repo) Path() string {
 	start := strings.LastIndex(r.url, "/")
 	end := strings.LastIndex(r.url, ".git")
-	return path.Join(r.home, r.url[start+1:end])
+	return path.Join(r.cacheDir, r.url[start+1:end])
 }
 
 // Pull fetchs the repository from remote url.
-func (r *Repo) Pull(ctx context.Context, url string) error {
+func (r *Repo) Pull(ctx context.Context) error {
 	repo, err := git.PlainOpen(r.Path())
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (r *Repo) Pull(ctx context.Context, url string) error {
 // Clone clones the repository to cache path.
 func (r *Repo) Clone(ctx context.Context) error {
 	if _, err := os.Stat(r.Path()); !os.IsNotExist(err) {
-		return r.Pull(ctx, r.url)
+		return r.Pull(ctx)
 	}
 	_, err := git.PlainCloneContext(ctx, r.Path(), false, &git.CloneOptions{
 		URL:      r.url,
@@ -71,5 +71,5 @@ func (r *Repo) CopyTo(ctx context.Context, to string, modPath string, ignores []
 	if err != nil {
 		return err
 	}
-	return copyDir(r.Path(), to, []string{mod, modPath}, ignores)
+	return copyDir(r.Path(), getRealPath(to), []string{mod, modPath}, ignores)
 }

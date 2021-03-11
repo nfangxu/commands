@@ -24,9 +24,5 @@ func (s Starter) New(ctx context.Context, dir string) error {
 	if err := repo.CopyTo(ctx, to, s.Name, []string{".git", ".github"}); err != nil {
 		return err
 	}
-	os.Rename(
-		path.Join(to, "cmd", "server"),
-		path.Join(to, "cmd", s.Name),
-	)
 	return nil
 }

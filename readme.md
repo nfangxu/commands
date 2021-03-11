@@ -1,6 +1,6 @@
 ### FangxTools
 
-> go get github.com/nfangxu/tools/cmd
+> go get github.com/nfangxu/tools/fx
 
 #### Commands
 

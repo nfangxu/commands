@@ -6,14 +6,15 @@ import (
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 )
 
-func kratosHome() string {
+func getHomeDir() string {
 	dir, err := os.UserHomeDir()
 	if err != nil {
 		log.Fatal(err)
 	}
-	home := path.Join(dir, ".kratos")
+	home := path.Join(dir, ".fangx")
 	if _, err := os.Stat(home); os.IsNotExist(err) {
 		if err := os.MkdirAll(home, 0700); err != nil {
 			log.Fatal(err)
@@ -22,14 +23,20 @@ func kratosHome() string {
 	return home
 }
 
-func kratosHomeWithDir(dir string) string {
-	home := path.Join(kratosHome(), dir)
+func getCacheDir(dir string) string {
+	home := path.Join(getHomeDir(), dir)
 	if _, err := os.Stat(home); os.IsNotExist(err) {
 		if err := os.MkdirAll(home, 0700); err != nil {
 			log.Fatal(err)
 		}
 	}
 	return home
+}
+
+func getRealPath(name string) string {
+	// 如果是 github.com/nfangxu/example, 目录只保留 example
+	_ , name = filepath.Split(name)
+	return name
 }
 
 func copyFile(src, dst string, replaces []string) error {
