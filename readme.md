@@ -1,9 +1,13 @@
-### FangxCommands
+### FangxTools
+
+> go get github.com/nfangxu/tools/cmd
+
+#### Commands
+
+- `fx create`
 
 ```bash
-go get github.com/nfangxu/commands
-
-fangx create helloworld
-
-fangx create https://github.com/go-kratos/kratos-layout.git helloworld
+fx create helloworld
+# Or
+fx create https://github.com/go-kratos/kratos-layout.git helloworld
 ```
