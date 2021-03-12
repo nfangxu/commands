@@ -9,5 +9,7 @@
 ```bash
 fx create helloworld
 # Or
-fx create https://github.com/go-kratos/kratos-layout.git helloworld
+fx create https://github.com/DoNewsCode/core-starter.git helloworld
+# Or
+fx create https://github.com/DoNewsCode/core-starter.git github.com/nfangxu/helloworld
 ```
